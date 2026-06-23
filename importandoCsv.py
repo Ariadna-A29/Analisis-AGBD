@@ -10,18 +10,18 @@ df = pd.read_csv("dataset_percepcion.csv")
 print("OKEY! Archivo cargado correctamente")
 
 #Logica de filtrado
-filtro_avanzado = df["DESTAQUE_SALUD"].str.starswith("1", na= False)
+filtro_avanzado = df["REGION"].str.starswith("1", na= False)
 df_filtrado = df(filtro_avanzado)
-suma_dinero = df_filtrado["INFORMACION_MEDICINA_SALUD"].sum()
+suma = df_filtrado["PONDERA"].sum()
 
 print("----- Reporte Automatizado -----")
-print(f"Monto finalizado: {suma_dinero:.2f} puntos")
+print(f"Suma total: {suma:.2f} puntos")
 
 #Condicional
-if default_limite_alto := (suma_dinero > 500):
+if default_limite_alto := (suma > 500):
     print("Alerta! La información supera el limite.")
     print("Requiere revisión inmediata")
-elif suma_dinero < 100:
+elif suma < 100:
     print("Aviso: mercado moderado/alto")
     print("Monitorear comportamiento prox trim")
 else:
@@ -35,13 +35,13 @@ sns.set_theme(style="whitegrid")
 plt.figure(figsize=(10,6))
 sns.barplot(
     data=df,
-    x="DESTAQUE_SALUD",
-    y="INFORMACION_MEDICINA_SALUD",
+    x="REGION",
+    y="PONDERA",
     estimator=sum,
     errorbar=None,
     palette="viridis",
 )
-plt.title("Comparativa de información medicina por región", fontsize=14)
+plt.title("Comparativa de información pondera sobre región", fontsize=14)
 plt.xticks(rotation=20)
 
 plt.savefig("grafico_barra.png", dpi=300)
